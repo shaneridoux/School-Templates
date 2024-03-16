@@ -1,0 +1,124 @@
+---
+title: "TITLE"
+author: "Shane Ridoux"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  html_document:
+    css: styles.css
+    js: event.js
+    toc: true
+    pandoc_args: ["--lua-filter", "tabset.lua"]
+    toc_float: 
+      collapse: false
+      smoothscroll: false
+    df_print: kable
+    code_folding: hide
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding) }) #, output_dir = "../reports") })
+---
+<!-- Markdown actually starts on line 159 -->
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(ggplot2)
+library(ggpubr)
+
+```
+
+<style>
+#TOC {
+  background: url("images/CU-Logo2.png");
+  background-size: contain;
+  padding-top: 80px !important;
+  background-repeat: no-repeat;
+}
+</style>
+
+<style>
+  .nav-pills>li>a {
+     color: black;
+     }
+  .nav-pills>li>a:hover, .nav-pills>li>a:focus, .nav-pills>li.active>a,     .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus{
+    link-color: black;
+    color: black;
+    background-color: #CFB87C;
+    border-color: #CFB87C
+     }
+</style>
+
+```{cat, engine.opts=list(file = "tabset.lua")}
+local tabset_level = 100
+local tab_level = 101
+local flag = false
+local stringify = pandoc.utils.stringify
+
+function is_tabset(classes)
+
+  local res = false
+
+  for _,v in ipairs(classes) do
+    res = res or (v == "tabset")
+  end
+
+  return res
+end
+
+function Block(block)
+  if block.tag == "Header" then
+    local level = block.level
+    if level <= tabset_level then
+      flag = is_tabset(block.classes)
+      tabset_level = flag and level or 100
+      tab_level = tabset_level + 1
+    elseif level == tab_level then
+      local id = block.identifier
+      block.identifier = id .. "-tab"
+      return {
+        block,
+        pandoc.RawBlock(
+          "html",
+          "<h" .. level .. " style='visibility: hidden'>" ..
+          stringify(block) ..
+          "</h" .. level .. ">"
+        )
+      }
+    end
+  end
+end
+```
+
+```{r, include=FALSE}
+options(width = 60)
+local({
+  hook_output <- knitr::knit_hooks$get('output')
+  knitr::knit_hooks$set(output = function(x, options) {
+    if (!is.null(options$max.height)) options$attr.output <- c(
+      options$attr.output,
+      sprintf('style="max-height: %s;"', options$max.height)
+    )
+    hook_output(x, options)
+  })
+})
+```
+
+
+```{r clear_console, include = FALSE}
+rm(list = ls())
+cat("\014")
+```
+
+<!-- Use this after header if you want tabs -->
+<!-- {.tabset .tabset-fade .tabset-pills} -->
+<!---------------- Start of Markdown ------------------>
+
+
+
+
+# **SESSION INFO**
+```{r}
+sessionInfo()
+```
+
+<!-- Footer -->
+
+![](images/CampusMark_Dual_standard_c_cmyk-1-removebg-preview.png)

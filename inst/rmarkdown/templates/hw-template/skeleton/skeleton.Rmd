@@ -1,0 +1,17 @@
+---
+title: "CLASS Homework #_"
+author: "By: Shane Ridoux"
+date: "Due: DD MONTH, YEAR"
+output: 
+  pdf_document:
+    extra_dependencies: ['amsmath', 'amssymb','verbatim', 'amsthm', 'graphicx', 'exercises']
+header-includes:
+  - \usepackage{titling}
+  - \pretitle{\begin{center}
+    \includegraphics[width=2.0in]{images/CU_Logo-crop.pdf}\LARGE\\}
+  - \posttitle{\end{center}}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
