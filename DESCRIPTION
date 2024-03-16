@@ -5,6 +5,6 @@ Version: 0.1.0
 Author: Shane Ridoux
 Maintainer: The package maintainer <shaneridoux@gmail.com>
 Description: This package contains a few templates used frequently for school.
-License: MIT + file LICENSE
+License: MIT LICENSE
 Encoding: UTF-8
 LazyData: true
